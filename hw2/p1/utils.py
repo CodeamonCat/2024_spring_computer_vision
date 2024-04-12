@@ -4,10 +4,13 @@ from tqdm import tqdm
 from cyvlfeat.sift.dsift import dsift
 from cyvlfeat.kmeans import kmeans
 from scipy.spatial.distance import cdist
+from scipy.stats import mode
 
-CAT = ['Kitchen', 'Store', 'Bedroom', 'LivingRoom', 'Office',
-       'Industrial', 'Suburb', 'InsideCity', 'TallBuilding', 'Street',
-       'Highway', 'OpenCountry', 'Coast', 'Mountain', 'Forest']
+CAT = [
+    'Kitchen', 'Store', 'Bedroom', 'LivingRoom', 'Office', 'Industrial',
+    'Suburb', 'InsideCity', 'TallBuilding', 'Street', 'Highway', 'OpenCountry',
+    'Coast', 'Mountain', 'Forest'
+]
 
 CAT2ID = {v: k for k, v in enumerate(CAT)}
 
@@ -15,6 +18,7 @@ CAT2ID = {v: k for k, v in enumerate(CAT)}
 ###### FEATURE UTILS              ######
 ###### use TINY_IMAGE as features ######
 ########################################
+
 
 ###### Step 1-a
 def get_tiny_images(img_paths):
@@ -28,7 +32,7 @@ def get_tiny_images(img_paths):
         1. N is the total number of images
         2. if the images are resized to 16x16, d would be 256
     '''
-    
+
     #################################################################
     # TODO:                                                         #
     # To build a tiny image feature, you can follow below steps:    #
@@ -41,17 +45,25 @@ def get_tiny_images(img_paths):
     #################################################################
 
     tiny_img_feats = []
+    for img_path in img_paths:
+        img = Image.open(img_path)
+        resized_img = img.resize((16, 16), resample=0)
+        norm_img = resized_img / np.linalg.norm(
+            resized_img, ord=1)  # ord=1: 1-norm, ord=2: 2-norm (default)
+        tiny_img_feats.append(norm_img.flatten())
 
     #################################################################
     #                        END OF YOUR CODE                       #
     #################################################################
 
-    return tiny_img_feats
+    return np.array(tiny_img_feats)
+
 
 #########################################
 ###### FEATURE UTILS               ######
 ###### use BAG_OF_SIFT as features ######
 #########################################
+
 
 ###### Step 1-b-1
 def build_vocabulary(img_paths, vocab_size=400):
@@ -66,7 +78,7 @@ def build_vocabulary(img_paths, vocab_size=400):
         2. vocab_size is up to you, larger value will works better (to a point) 
            but be slower to compute, you can set vocab_size in p1.py
     '''
-    
+
     ##################################################################################
     # TODO:                                                                          #
     # To build vocabularies from training images, you can follow below steps:        #
@@ -97,12 +109,28 @@ def build_vocabulary(img_paths, vocab_size=400):
     # You are welcome to use your own SIFT feature                                   #
     ##################################################################################
 
+    features = list()
+    step_size = 1
+
+    for img_path in img_paths:
+        img = np.array(Image.open(img_path), dtype='float32')
+        keypoints, descriptors = dsift(img,
+                                       step=[step_size, step_size],
+                                       fast=True)
+        if descriptors is not None:
+            for descriptor in descriptors:
+                features.append(descriptor)
+
+    features = np.array(features).astype('float32')
+    vocab = kmeans(features, num_centers=vocab_size, initialization="PLUSPLUS")
+
     ##################################################################################
     #                                END OF YOUR CODE                                #
     ##################################################################################
-    
-    # return vocab
-    return None
+
+    return vocab
+    # return None
+
 
 ###### Step 1-b-2
 def get_bags_of_sifts(img_paths, vocab):
@@ -140,18 +168,33 @@ def get_bags_of_sifts(img_paths, vocab):
     #   1. we recommend first completing function 'build_vocabulary()'         #
     ############################################################################
 
-    img_feats = []
+    img_feats = list()
+    step_size = 1
+
+    for img_path in img_paths:
+        img = np.array(Image.open(img_path), dtype='float32')
+        keypoints, descriptors = dsift(img,
+                                       step=[step_size, step_size],
+                                       fast=True)
+        dist = cdist(vocab, descriptors,
+                     metric='cityblock')  # default: metric='euclidean'
+        index = np.argmin(dist, axis=0)
+        hist, bin_edge = np.histogram(index, bins=len(vocab))
+        hist_norm = [float(i) / sum(hist) for i in hist]
+        img_feats.append(hist_norm)
 
     ############################################################################
     #                                END OF YOUR CODE                          #
     ############################################################################
-    
+
     return img_feats
+
 
 ################################################
 ###### CLASSIFIER UTILS                   ######
 ###### use NEAREST_NEIGHBOR as classifier ######
 ################################################
+
 
 ###### Step 2
 def nearest_neighbor_classify(train_img_feats, train_labels, test_img_feats):
@@ -171,9 +214,11 @@ def nearest_neighbor_classify(train_img_feats, train_labels, test_img_feats):
         3. M is the total number of testing images
     '''
 
-    CAT = ['Kitchen', 'Store', 'Bedroom', 'LivingRoom', 'Office',
-           'Industrial', 'Suburb', 'InsideCity', 'TallBuilding', 'Street',
-           'Highway', 'OpenCountry', 'Coast', 'Mountain', 'Forest']
+    CAT = [
+        'Kitchen', 'Store', 'Bedroom', 'LivingRoom', 'Office', 'Industrial',
+        'Suburb', 'InsideCity', 'TallBuilding', 'Street', 'Highway',
+        'OpenCountry', 'Coast', 'Mountain', 'Forest'
+    ]
 
     CAT2ID = {v: k for k, v in enumerate(CAT)}
 
@@ -200,9 +245,14 @@ def nearest_neighbor_classify(train_img_feats, train_labels, test_img_feats):
     ###########################################################################
 
     test_predicts = []
+    K = 8
+
+    dists = cdist(test_img_feats, train_img_feats, metric='cityblock')
+    k_nearest_labels = np.array(train_labels)[np.argsort(dists)[:, :K]]
+    test_predicts = mode(k_nearest_labels, axis=1).mode.ravel()
 
     ###########################################################################
     #                               END OF YOUR CODE                          #
     ###########################################################################
-    
+
     return test_predicts
