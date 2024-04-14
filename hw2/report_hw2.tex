@@ -76,15 +76,15 @@
 \section{Part 1. (10\%)}
 \subsection{Plot confusion matrix of two settings. (i.e. Bag of sift and tiny image) (5\%)}
 \begin{table}[!htb]
-    \centering
-    \caption{The confusion matrix and the accuracy of bag of sift and tiny image}
-    \begin{tabular}{|c|c|}
-        \hline
-        \includegraphics[scale=0.5]{p1/bag_of_sift.png} & \includegraphics[scale=0.5]{p1/tiny_image.png} \\
-        \hline
-        bag\_of\_sift = 0.612                           & tiny\_image = 0.2033                           \\
-        \hline
-    \end{tabular}
+  \centering
+  \caption{The confusion matrix and the accuracy of bag of sift and tiny image}
+  \begin{tabular}{|c|c|}
+    \hline
+    \includegraphics[scale=0.5]{p1/bag_of_sift.png} & \includegraphics[scale=0.5]{p1/tiny_image.png} \\
+    \hline
+    bag\_of\_sift = 0.6120                          & tiny\_image = 0.2033                           \\
+    \hline
+  \end{tabular}
 \end{table}
 
 \subsection{Compare the results/accuracy of both settings and explain the result. (5\%)}
@@ -98,29 +98,29 @@ However, despite these optimizations, the model still fails to surpass the basel
 \vspace{2em}
 
 \begin{align*}
-    \text{euclidean}\Rightarrow & d(x,y)=\sqrt{(x_1-y_1)^2+(x_2-y_2)^2} \\
-    \text{cityblock}\Rightarrow & d(x,y)=|x_1-y_1|+|x_2-y_2|
+  \text{euclidean}\Rightarrow & d(x,y)=\sqrt{(x_1-y_1)^2+(x_2-y_2)^2} \\
+  \text{cityblock}\Rightarrow & d(x,y)=|x_1-y_1|+|x_2-y_2|
 \end{align*}
 
 \begin{align*}
-    \text{1-norm}\Rightarrow & ||A||_S = \sum_{i,j}abs(a_{i,j})                        \\
-    \text{2-norm}\Rightarrow & ||A||_F = \left[\sum_{i,j}abs(a_{i,j})^2\right]^{(1/2)}
+  \text{1-norm}\Rightarrow & ||A||_S = \sum_{i,j}abs(a_{i,j})                        \\
+  \text{2-norm}\Rightarrow & ||A||_F = \left[\sum_{i,j}abs(a_{i,j})^2\right]^{(1/2)}
 \end{align*}
 
 \begin{table}[!htb]
-    \centering
-    \caption{The accuracy of various values of k in the tiny image KNN algorithm}
-    \begin{tabular}{|c|c|c|c|c|c|}
-        \hline
-                        & k=1    & k=2    & k=3    & k=4    & k=5    \\
-        \hline
-        \text{Accuracy} & 0.2233 & 0.1787 & 0.1887 & 0.2047 & 0.2020 \\
-        \hline
-                        & k=6    & k=7    & k=8    & k=9    & k=10   \\
-        \hline
-        \text{Accuracy} & 0.1980 & 0.2000 & 0.2033 & 0.1980 & 0.2020 \\
-        \hline
-    \end{tabular}
+  \centering
+  \caption{The accuracy of various values of k in the tiny image KNN algorithm}
+  \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+                    & k=1    & k=2    & k=3    & k=4    & k=5    \\
+    \hline
+    \text{Accuracy} & 0.2233 & 0.1787 & 0.1887 & 0.2047 & 0.2020 \\
+    \hline
+                    & k=6    & k=7    & k=8    & k=9    & k=10   \\
+    \hline
+    \text{Accuracy} & 0.1980 & 0.2000 & 0.2033 & 0.1980 & 0.2020 \\
+    \hline
+  \end{tabular}
 \end{table}
 
 \subsubsection{bag\_of\_sift}
@@ -131,31 +131,31 @@ For the sake of consistency, we keep the same metrics used from tiny images to e
 Consequently, I conducted tests with various sizes, ranging from step=[5, 5], step=[3, 3], down to step=[1, 1], with results aligning as anticipated. Additionally, larger cluster sizes (vocab\_size) tend to yield superior performance, hence I retained the default value (400) here. Nonetheless, opting for a cluster size that is too small noticeably impairs the ability to distinguish features effectively. Lastly, the choice of k value was determined through experimentation to achieve optimal results.
 
 \begin{table}[!htb]
-    \centering
-    \caption{The accuracy of various values of k in bag of sift KNN algorithm}
-    \begin{tabular}{|c|c|c|c|c|c|}
-        \hline
-                 & k=1    & k=2    & k=3    & k=4    & k=5    \\
-        \hline
-        Accuracy & 0.5933 & 0.5780 & 0.5820 & 0.5920 & 0.5927 \\
-        \hline
-                 & k=6    & k=7    & k=8    & k=9    & k=10   \\
-        \hline
-        Accuracy & 0.5947 & 0.6013 & 0.6120 & 0.6033 & 0.5973 \\
-        \hline
-    \end{tabular}
+  \centering
+  \caption{The accuracy of various values of k in bag of sift KNN algorithm}
+  \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+             & k=1    & k=2    & k=3    & k=4    & k=5    \\
+    \hline
+    Accuracy & 0.5933 & 0.5780 & 0.5820 & 0.5920 & 0.5927 \\
+    \hline
+             & k=6    & k=7    & k=8    & k=9    & k=10   \\
+    \hline
+    Accuracy & 0.5947 & 0.6013 & 0.6120 & 0.6033 & 0.5973 \\
+    \hline
+  \end{tabular}
 \end{table}
 
 \begin{table}[!htb]
-    \centering
-    \caption{The accuracy of various step sizes of dsift function}
-    \begin{tabular}{|c|c|c|c|}
-        \hline
-            & step=[1, 1] & step=[3, 3] & step=[5, 5] \\
-        \hline
-        k=8 & 0.6120      & 0.5833      & 0.5453      \\
-        \hline
-    \end{tabular}
+  \centering
+  \caption{The accuracy of various step sizes of dsift function}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+        & step=[1, 1] & step=[3, 3] & step=[5, 5] \\
+    \hline
+    k=8 & 0.6120      & 0.5833      & 0.5453      \\
+    \hline
+  \end{tabular}
 \end{table}
 
 \subsubsection{summary}
@@ -164,17 +164,17 @@ The confusion matrix reveals that the bag of sift approach exhibits a more symme
 \section{Part 2. (25\%)}
 \subsection{Report accuracy of both models on the validation set. (2\%)}
 \begin{table}[!htb]
-    \centering
-    \caption{The accuracy and loss of both models on training and validation set}
-    \begin{tabular}{|c|c|c|c|c|c|}
-        \hline
-        model    & Train Acc & Val Acc & Train Loss & Val Loss & Accuracy = \\
-        \hline
-        mynet    & 0.97840   & 0.88980 & 0.06605    & 0.39247  & 0.8898     \\
-        \hline
-        resnet18 & 0.98415   & 0.89860 & 0.05136    & 0.40423  & 0.8918     \\
-        \hline
-    \end{tabular}
+  \centering
+  \caption{The accuracy and loss of both models on training and validation set}
+  \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    model    & Train Acc & Val Acc & Train Loss & Val Loss & Accuracy \\
+    \hline
+    mynet    & 0.97840   & 0.88980 & 0.06605    & 0.39247  & 0.8898   \\
+    \hline
+    resnet18 & 0.98415   & 0.89860 & 0.05136    & 0.40423  & 0.8986   \\
+    \hline
+  \end{tabular}
 \end{table}
 
 \subsection{Print the network architecture \& number of parameters of both models. What is the main difference between ResNet and other CNN architectures? (5\%)}
@@ -940,31 +940,31 @@ Compared with ResNet, traditional CNN architectures such as LeNet, AlexNet, and 
 \subsection{Plot four learning curves (loss \& accuracy) of the training process (train/validation) for both models. Total 8 plots. (8\%)}
 
 \begin{table}[!htb]
-    \centering
-    \caption{The learning curves of the training process (train/validation) for mynet models}
-    \begin{tabular}{|c|c|c|}
-        \hline
-        type & accuracy & loss \\
-        \hline
-        train &\includegraphics[scale=0.5]{p2/experiment/mynet_2024_04_14_21_58_22_sgd_pre_da/log/train_acc_list.png} & \includegraphics[scale=0.5]{p2/experiment/mynet_2024_04_14_21_58_22_sgd_pre_da/log/train_loss_list.png} \\
-        \hline
-        valid &\includegraphics[scale=0.5]{p2/experiment/mynet_2024_04_14_21_58_22_sgd_pre_da/log/val_acc_list.png} & \includegraphics[scale=0.5]{p2/experiment/mynet_2024_04_14_21_58_22_sgd_pre_da/log/val_loss_list.png} \\
-        \hline
-    \end{tabular}
+  \centering
+  \caption{The learning curves of the training process (train/validation) for mynet models}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    type  & accuracy                                                                                               & loss                                                                                                    \\
+    \hline
+    train & \includegraphics[scale=0.5]{p2/experiment/mynet_2024_04_14_21_58_22_sgd_pre_da/log/train_acc_list.png} & \includegraphics[scale=0.5]{p2/experiment/mynet_2024_04_14_21_58_22_sgd_pre_da/log/train_loss_list.png} \\
+    \hline
+    valid & \includegraphics[scale=0.5]{p2/experiment/mynet_2024_04_14_21_58_22_sgd_pre_da/log/val_acc_list.png}   & \includegraphics[scale=0.5]{p2/experiment/mynet_2024_04_14_21_58_22_sgd_pre_da/log/val_loss_list.png}   \\
+    \hline
+  \end{tabular}
 \end{table}
 
 \begin{table}[!htb]
-    \centering
-    \caption{The learning curves of the training process (train/validation) for resnet18 models}
-    \begin{tabular}{|c|c|c|}
-        \hline
-        type & accuracy & loss \\
-        \hline
-        train &\includegraphics[scale=0.5]{p2/experiment/resnet18_2024_04_12_14_05_14_sgd_pre_da/log/train_acc_list.png} & \includegraphics[scale=0.5]{p2/experiment/resnet18_2024_04_12_14_05_14_sgd_pre_da/log/train_loss_list.png} \\
-        \hline
-        valid &\includegraphics[scale=0.5]{p2/experiment/resnet18_2024_04_12_14_05_14_sgd_pre_da/log/val_acc_list.png} & \includegraphics[scale=0.5]{p2/experiment/resnet18_2024_04_12_14_05_14_sgd_pre_da/log/val_loss_list.png} \\
-        \hline
-    \end{tabular}
+  \centering
+  \caption{The learning curves of the training process (train/validation) for resnet18 models}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    type  & accuracy                                                                                                  & loss                                                                                                       \\
+    \hline
+    train & \includegraphics[scale=0.5]{p2/experiment/resnet18_2024_04_12_14_05_14_sgd_pre_da/log/train_acc_list.png} & \includegraphics[scale=0.5]{p2/experiment/resnet18_2024_04_12_14_05_14_sgd_pre_da/log/train_loss_list.png} \\
+    \hline
+    valid & \includegraphics[scale=0.5]{p2/experiment/resnet18_2024_04_12_14_05_14_sgd_pre_da/log/val_acc_list.png}   & \includegraphics[scale=0.5]{p2/experiment/resnet18_2024_04_12_14_05_14_sgd_pre_da/log/val_loss_list.png}   \\
+    \hline
+  \end{tabular}
 \end{table}
 
 \vspace{10em}
@@ -972,7 +972,7 @@ Compared with ResNet, traditional CNN architectures such as LeNet, AlexNet, and 
 \subsection{Briefly describe what method do you apply on your best model? (e.g. data augmentation, model architecture, loss function, etc) (10\%)}
 To ensure the stability of the program, I initially focused on developing and optimizing a ResNet18 model.  Considering the rotational invariance challenge of CNNs,  I introduced random rotation into the data augmentation process. Following recommendations from the task guidelines, I optimized the model by reducing the kernel size and stride of the first convolution layer, while also eliminating the first max-pooling layer and replacing it with Identity(). Surprisingly, these adjustments resulted in the model passing the strong baseline (0.84) in its first training iteration.
 
-In pursuit of comparable accuracy and performance to the resnet18, I evaluated the VGG16\cite{simonyan2015deep} and VGG19\cite{simonyan2015deep} CNN models, given their similar release times compared to resnet18. Notably, I observed that VGG19 exhibited lower accuracy compared to VGG16 during the training process. To address the failure to pass the strong baseline,  I attempted to optimize the VGG16 model by introducing the dropout strategy and increasing the dimensions of the first two convolutional layers from $64$ to $96$, this led to an increment of accuracy from 0.825 to 0.8316. 
+In pursuit of comparable accuracy and performance to the resnet18, I evaluated the VGG16\cite{simonyan2015deep} and VGG19\cite{simonyan2015deep} CNN models, given their similar release times compared to resnet18. Notably, I observed that VGG19 exhibited lower accuracy compared to VGG16 during the training process. To address the failure to pass the strong baseline,  I attempted to optimize the VGG16 model by introducing the dropout strategy and increasing the dimensions of the first two convolutional layers from $64$ to $96$, this led to an increment of accuracy from 0.825 to 0.8316.
 
 Despite several modifications, optimizing the model architecture alone did not yield the desired accuracy enhancements. Hence, I incorporated data augmentation techniques into the training process again and found that applying random horizontal flip techniques to images consistently improved model accuracy. With this addition, the model surpassed the strong baseline (0.84). However, I noticed that the model size exceeds the 80MB size limitation, so I began exploring all other known CNN models to address this constraint.
 
