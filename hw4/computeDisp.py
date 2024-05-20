@@ -15,15 +15,15 @@ def computeDisp(Il, Ir, max_disp):
     # [Tips] Set costs of out-of-bound pixels = cost of closest valid pixel
     # [Tips] Compute cost both Il to Ir and Ir to Il for later left-right consistency
 
-    cost_left = np.zeros((9, h, w, ch), dtype=int)
-    cost_right = np.zeros((9, h, w, ch), dtype=int)
+    cost_left = np.zeros((8, h, w, ch), dtype=int)
+    cost_right = np.zeros((8, h, w, ch), dtype=int)
     padded_Il = np.pad(Il, pad_width=1, mode='constant',
                        constant_values=0)[:, :, 1:-1]
     padded_Ir = np.pad(Ir, pad_width=1, mode='constant',
                        constant_values=0)[:, :, 1:-1]
 
-    kernel = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 0), (0, 1), (1, -1),
-              (1, 0), (1, 1)]
+    kernel = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0),
+              (1, 1)]
 
     for idx, (dr, dc) in enumerate(kernel):
         shifted_Il = np.roll(padded_Il, shift=(dr, dc), axis=(0, 1))
