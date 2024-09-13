@@ -1,0 +1,16 @@
+datasets==2.19.2
+evaluate==0.4.2
+filterpy==1.4.5
+lap==0.4.0
+matplotlib==3.5.1
+numpy==1.21.5
+opencv_python==4.10.0.82
+pandas==2.2.2
+Pillow==9.0.1
+Pillow==10.3.0
+scikit_learn==1.5.0
+scipy==1.8.0
+skimage==0.0
+torch==2.3.0
+torchvision==0.18.0
+transformers==4.41.2
